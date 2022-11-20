@@ -20,16 +20,19 @@ type Service struct {
 }
 
 func (sp *ServicePool) GroupHealthCheck() {
+	var status string
 	for {
 		for _, service := range sp.Services {
-			status := "up"
+
 			alive := service.isServiceUp()
 			if !alive {
 				status = "down"
 				service.SetServiceDown()
-				continue
+			} else {
+				status = "up"
+				service.SetServiceUp()
 			}
-			service.SetServiceUp()
+
 			log.Printf("status: %s - [%s]", service.URL, status)
 		}
 		time.Sleep(5 * time.Second)
@@ -40,7 +43,6 @@ func (s *Service) isServiceUp() bool {
 	timeout := 5 * time.Second
 	conn, err := net.DialTimeout("tcp", s.URL.Host, timeout)
 	if err != nil {
-		log.Println("Unable to establish tcp connection to: ", s.URL.Host)
 		return false
 	}
 	err = conn.Close()
