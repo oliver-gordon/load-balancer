@@ -11,7 +11,7 @@ import (
 )
 
 func main() {
-	domains := []string{"http://localhost:8000", "http://localhost:8001"}
+	domains := []string{}
 	var pool service.ServicePool
 	for _, domain := range domains {
 		url, err := url.Parse(domain)

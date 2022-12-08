@@ -1,7 +1,6 @@
 package service
 
 import (
-	"fmt"
 	"log"
 	"net/http"
 	"net/http/httputil"
@@ -25,7 +24,6 @@ type Service struct {
 
 func (sp *ServicePool) Balance(w http.ResponseWriter, r *http.Request) {
 	as := sp.GetService()
-	fmt.Println(as)
 	if as != nil {
 		as.ReverseProxy.ServeHTTP(w, r)
 		return
